@@ -44,7 +44,7 @@ python scripts/validate_dataset.py samples.csv
 Evaluation command:
 
 ```powershell
-python evaluate.py samples.csv --threshold 0.363 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis
+python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis
 python scripts/export_technical_pdf.py
 ```
 

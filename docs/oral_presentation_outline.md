@@ -32,7 +32,7 @@ Show the commands:
 ```powershell
 python scripts/validate_dataset.py samples.csv
 python scripts/tune_threshold.py samples.csv --output threshold_tuning.json
-python evaluate.py samples.csv --threshold 0.363 --output evaluation_results.json --report docs/evaluation_report.md --update-technical-analysis
+python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --update-technical-analysis
 ```
 
 Explain accuracy, precision, recall, F1-score, and confusion matrix.

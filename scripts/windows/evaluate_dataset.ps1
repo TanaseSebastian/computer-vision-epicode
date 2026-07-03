@@ -1,6 +1,6 @@
 param(
     [string]$CsvPath = "samples.csv",
-    [double]$Threshold = 0.363
+    [double]$Threshold = 0.36
 )
 
 $ErrorActionPreference = "Stop"

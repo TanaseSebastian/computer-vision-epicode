@@ -35,8 +35,8 @@ MODEL_DIR = ROOT_DIR / "models"
 YUNET_MODEL = MODEL_DIR / "face_detection_yunet_2023mar.onnx"
 SFACE_MODEL = MODEL_DIR / "face_recognition_sface_2021dec.onnx"
 MODEL_URLS = {
-    YUNET_MODEL: "https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx",
-    SFACE_MODEL: "https://github.com/opencv/opencv_zoo/raw/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx",
+    YUNET_MODEL: "https://huggingface.co/opencv/face_detection_yunet/resolve/main/face_detection_yunet_2023mar.onnx?download=true",
+    SFACE_MODEL: "https://huggingface.co/opencv/face_recognition_sface/resolve/main/face_recognition_sface_2021dec.onnx?download=true",
 }
 
 
@@ -113,14 +113,26 @@ def gradient_histogram(gray: np.ndarray) -> np.ndarray:
     return np.nan_to_num(hist).astype(np.float32)
 
 
+def standardized_unit_vector(values: np.ndarray) -> np.ndarray:
+    centered = values.astype(np.float32) - float(values.mean())
+    std = float(centered.std())
+    if std > 1e-6:
+        centered = centered / std
+
+    norm = np.linalg.norm(centered)
+    if norm == 0:
+        return centered
+    return centered / norm
+
+
 def face_embedding(face: np.ndarray) -> np.ndarray:
     gray = normalized_face(face)
     small = cv2.resize(gray, (48, 48), interpolation=cv2.INTER_AREA).astype(np.float32) / 255.0
     features = np.concatenate(
         [
-            small.ravel(),
-            local_binary_pattern(gray),
-            gradient_histogram(gray),
+            standardized_unit_vector(small.ravel()) * 0.65,
+            standardized_unit_vector(local_binary_pattern(gray)) * 0.20,
+            standardized_unit_vector(gradient_histogram(gray)) * 0.15,
         ]
     )
     norm = np.linalg.norm(features)
@@ -180,7 +192,17 @@ def ensure_deep_models() -> bool:
                 urlretrieve(url, path)
             except Exception:
                 return False
-    return YUNET_MODEL.exists() and SFACE_MODEL.exists()
+
+    if not YUNET_MODEL.exists() or not SFACE_MODEL.exists():
+        return False
+
+    try:
+        cv2.FaceDetectorYN_create(str(YUNET_MODEL), "", (320, 320))
+        cv2.FaceRecognizerSF_create(str(SFACE_MODEL), "")
+    except cv2.error:
+        return False
+
+    return True
 
 
 def deep_face_candidates(image: np.ndarray) -> list[np.ndarray]:
@@ -192,7 +214,7 @@ def deep_face_candidates(image: np.ndarray) -> list[np.ndarray]:
         str(YUNET_MODEL),
         "",
         (width, height),
-        0.85,
+        0.55,
         0.3,
         5000,
     )
@@ -248,7 +270,7 @@ def classical_single_image_similarity(
     return best_score, len(faces), len(faces) - 1, to_box(faces[0]), to_box(best_document_face)
 
 
-def verify_identity(image_path: Path, threshold: float = 0.363) -> VerificationResult:
+def verify_identity(image_path: Path, threshold: float = 0.36) -> VerificationResult:
     if threshold <= 0 or threshold >= 1:
         raise VerificationError("La soglia deve essere compresa tra 0 e 1.")
 

@@ -10,8 +10,8 @@ Before publishing or submitting:
 - If the dataset uses `dataset/match/` and `dataset/no_match/`, run `python scripts/build_dataset_csv.py dataset --output samples.csv`.
 - Run `python scripts/validate_dataset.py samples.csv`.
 - Optionally tune the threshold with `python scripts/tune_threshold.py samples.csv --output threshold_tuning.json`.
-- Run `python evaluate.py samples.csv --threshold 0.363 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis`.
-- On Windows, the evaluation flow can be run with `.\scripts\windows\evaluate_dataset.ps1 -CsvPath samples.csv -Threshold 0.363`.
+- Run `python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis`.
+- On Windows, the evaluation flow can be run with `.\scripts\windows\evaluate_dataset.ps1 -CsvPath samples.csv -Threshold 0.36`.
 - Cross-platform final workflow: `python scripts/finalize_submission.py --csv samples.csv --tune-threshold`.
 - Create a clean submission ZIP with `python scripts/package_submission.py`.
 - Run `python scripts/export_technical_pdf.py`.

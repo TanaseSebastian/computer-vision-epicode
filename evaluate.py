@@ -254,7 +254,7 @@ def save_plots(report: dict, output_dir: Path) -> None:
 def main():
     parser = argparse.ArgumentParser(description="Evaluate the single-image identity checker.")
     parser.add_argument("csv_path", type=Path)
-    parser.add_argument("--threshold", type=float, default=0.363)
+    parser.add_argument("--threshold", type=float, default=0.36)
     parser.add_argument("--output", type=Path, default=Path("evaluation_results.json"))
     parser.add_argument("--report", type=Path, default=Path("docs/evaluation_report.md"))
     parser.add_argument("--plots-dir", type=Path, default=Path("docs/figures"))

@@ -57,7 +57,7 @@ If the ONNX models are unavailable, the system falls back to a classical method:
 Run evaluation with:
 
 ```powershell
-python evaluate.py samples.csv --threshold 0.363 --output evaluation_results.json
+python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json
 ```
 
 The script reports:

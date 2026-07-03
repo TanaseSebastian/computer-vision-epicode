@@ -25,7 +25,7 @@ Setup Windows rapido:
 Oltre alla pagina web, il progetto espone un endpoint JSON:
 
 ```powershell
-curl -X POST http://127.0.0.1:5000/api/verify -F "identity_image=@dataset/sample.jpg" -F "threshold=0.363"
+curl -X POST http://127.0.0.1:5000/api/verify -F "identity_image=@dataset/sample.jpg" -F "threshold=0.36"
 ```
 
 La risposta contiene match, score, metodo usato, numero di volti rilevati e candidati documento.
@@ -66,7 +66,7 @@ Dopo il crop del volto principale, le immagini vengono normalizzate e trasformat
 - istogramma LBP per la texture locale;
 - istogramma dei gradienti per la struttura del volto.
 
-La verifica usa similarita coseno tra i due vettori. La soglia predefinita e `0.363`, modificabile dall'interfaccia.
+La verifica usa similarita coseno tra i due vettori. La soglia predefinita e `0.36`, modificabile dall'interfaccia.
 
 ## Valutazione
 
@@ -86,13 +86,13 @@ python scripts/validate_dataset.py samples.csv
 ```
 
 ```powershell
-python evaluate.py samples.csv --threshold 0.363 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures
+python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures
 ```
 
 Lo script calcola accuracy, precision, recall, F1-score e confusion matrix. Per inserire automaticamente le metriche nel documento tecnico:
 
 ```powershell
-python evaluate.py samples.csv --threshold 0.363 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis
+python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis
 python scripts/export_technical_pdf.py
 ```
 

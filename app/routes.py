@@ -59,7 +59,7 @@ def verify():
     try:
         image_path = save_upload("identity_image")
         try:
-            threshold = float(request.form.get("threshold", 0.363))
+            threshold = float(request.form.get("threshold", 0.36))
         except ValueError as exc:
             raise VerificationError("La soglia deve essere un numero.") from exc
 
@@ -80,7 +80,7 @@ def verify_api():
     try:
         image_path = save_upload("identity_image")
         try:
-            threshold = float(request.form.get("threshold", 0.363))
+            threshold = float(request.form.get("threshold", 0.36))
         except ValueError as exc:
             raise VerificationError("La soglia deve essere un numero.") from exc
 
