@@ -1,0 +1,3 @@
+image,label
+dataset/example_positive_01.jpg,match
+dataset/example_negative_01.jpg,no_match

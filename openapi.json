@@ -1,0 +1,101 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Identity Checker API",
+    "version": "1.0.0",
+    "description": "Single-image identity verification for a selfie with visible document."
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "Application health status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "models": {
+                      "type": "object",
+                      "properties": {
+                        "yunet": {"type": "boolean"},
+                        "sface": {"type": "boolean"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/verify": {
+      "post": {
+        "summary": "Verify identity from a selfie with document",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["identity_image"],
+                "properties": {
+                  "identity_image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "default": 0.363
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verification result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "match": {"type": "boolean"},
+                    "score": {"type": "number"},
+                    "threshold": {"type": "number"},
+                    "total_faces": {"type": "integer"},
+                    "candidate_document_faces": {"type": "integer"},
+                    "method": {"type": "string"},
+                    "classical_score": {"type": "number", "nullable": true},
+                    "deep_score": {"type": "number", "nullable": true},
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or unverifiable image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

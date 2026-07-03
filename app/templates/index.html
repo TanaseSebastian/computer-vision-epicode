@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Identity Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="panel">
+        <div class="heading">
+          <p class="eyebrow">Computer Vision</p>
+          <h1>Identity Checker</h1>
+          <p class="subtitle">Carica un selfie in cui si vede anche il documento in mano: l'app confronta il volto principale con il volto presente sul documento.</p>
+        </div>
+
+        <form action="{{ url_for('main.verify') }}" method="post" enctype="multipart/form-data" class="form">
+          <label class="upload">
+            <span>Selfie con documento</span>
+            <input type="file" name="identity_image" accept="image/png,image/jpeg,image/webp" required>
+          </label>
+
+          <label class="threshold">
+            <span>Soglia di verifica</span>
+            <input type="number" name="threshold" min="0.1" max="0.95" step="0.01" value="{{ threshold or 0.363 }}">
+          </label>
+
+          <button type="submit">Verifica identita</button>
+        </form>
+      </section>
+
+      <section class="result-panel" aria-live="polite">
+        {% if result %}
+          <div class="status {{ 'ok' if result.match else 'ko' }}">
+            <span>{{ 'Match' if result.match else 'No match' }}</span>
+            <strong>{{ result.score }}</strong>
+          </div>
+          <p>{{ result.message }}</p>
+          {% if result.annotated_image %}
+            <img class="preview" src="{{ result.annotated_image }}" alt="Anteprima con volto selfie e volto documento evidenziati">
+          {% endif %}
+          <dl>
+            <div>
+              <dt>Metodo</dt>
+              <dd>{{ result.method }}</dd>
+            </div>
+            <div>
+              <dt>Soglia</dt>
+              <dd>{{ result.threshold }}</dd>
+            </div>
+            <div>
+              <dt>Score deep</dt>
+              <dd>{{ result.deep_score if result.deep_score is not none else 'non disponibile' }}</dd>
+            </div>
+            <div>
+              <dt>Score classico</dt>
+              <dd>{{ result.classical_score if result.classical_score is not none else 'non disponibile' }}</dd>
+            </div>
+            <div>
+              <dt>Volti rilevati</dt>
+              <dd>{{ result.total_faces }}</dd>
+            </div>
+            <div>
+              <dt>Candidati documento</dt>
+              <dd>{{ result.candidate_document_faces }}</dd>
+            </div>
+          </dl>
+        {% elif error %}
+          <div class="status ko">
+            <span>Errore</span>
+            <strong>!</strong>
+          </div>
+          <p>{{ error }}</p>
+        {% else %}
+          <div class="placeholder">
+            <span>Score</span>
+            <strong>--</strong>
+            <p>Il risultato apparira qui dopo il confronto.</p>
+          </div>
+        {% endif %}
+      </section>
+    </main>
+  </body>
+</html>

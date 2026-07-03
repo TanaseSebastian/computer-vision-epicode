@@ -1,0 +1,14 @@
+.git/
+.venv/
+.tools/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+models/
+app/uploads/*
+dataset/
+evaluation_results.json
+threshold_tuning.json
+docs/evaluation_report.md
+docs/figures/*.png
+Final Exam.pptx.pdf
