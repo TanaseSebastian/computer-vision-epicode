@@ -9,11 +9,10 @@ Before publishing or submitting:
 - Put the real dataset images in a local `dataset/` folder or update `samples.csv` with the correct paths.
 - If the dataset uses `dataset/match/` and `dataset/no_match/`, run `python scripts/build_dataset_csv.py dataset --output samples.csv`.
 - Run `python scripts/validate_dataset.py samples.csv`.
-- Optionally tune the threshold with `python scripts/tune_threshold.py samples.csv --output threshold_tuning.json`.
-- Run `python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis`.
-- On Windows, the evaluation flow can be run with `.\scripts\windows\evaluate_dataset.ps1 -CsvPath samples.csv -Threshold 0.36`.
+- Tune the threshold only on validation data with `python scripts/tune_threshold.py validation.csv --output threshold_tuning.json`.
+- Run `python evaluate.py test.csv --threshold 0.32 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis`.
+- On Windows, the evaluation flow can be run with `.\scripts\windows\evaluate_dataset.ps1 -CsvPath test.csv -Threshold 0.32`.
 - Cross-platform final workflow: `python scripts/finalize_submission.py --csv samples.csv --tune-threshold`.
-- Create a clean submission ZIP with `python scripts/package_submission.py`.
 - Run `python scripts/export_technical_pdf.py`.
 - Check that `docs/technical_analysis.pdf` includes real results, not placeholder values.
 - Create or update the public GitHub repository.

@@ -270,7 +270,7 @@ def classical_single_image_similarity(
     return best_score, len(faces), len(faces) - 1, to_box(faces[0]), to_box(best_document_face)
 
 
-def verify_identity(image_path: Path, threshold: float = 0.36) -> VerificationResult:
+def verify_identity(image_path: Path, threshold: float = 0.32) -> VerificationResult:
     if threshold <= 0 or threshold >= 1:
         raise VerificationError("La soglia deve essere compresa tra 0 e 1.")
 

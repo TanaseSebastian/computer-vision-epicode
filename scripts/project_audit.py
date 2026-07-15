@@ -38,7 +38,6 @@ REQUIRED_FILES = [
     "scripts/validate_dataset.py",
     "scripts/tune_threshold.py",
     "scripts/finalize_submission.py",
-    "scripts/package_submission.py",
     "scripts/export_technical_pdf.py",
     "scripts/windows/setup.ps1",
     "scripts/windows/check.ps1",

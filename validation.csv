@@ -1,0 +1,7 @@
+image,label
+dataset/validation/no_match/real_001.png,no_match
+dataset/validation/no_match/real_004.jpeg,no_match
+dataset/validation/match/real_007.jpeg,match
+dataset/validation/match/synthetic_001.png,match
+dataset/validation/no_match/synthetic_002.png,no_match
+dataset/validation/match/synthetic_003.png,match

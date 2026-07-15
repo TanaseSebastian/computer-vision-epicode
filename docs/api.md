@@ -33,12 +33,12 @@ Content type: `multipart/form-data`
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `identity_image` | file | yes | JPG, JPEG, PNG, or WEBP image containing live face and document |
-| `threshold` | number | no | Similarity threshold between 0 and 1. Default: `0.36` |
+| `threshold` | number | no | Similarity threshold between 0 and 1. Default: `0.32` |
 
 ### Example
 
 ```powershell
-curl -X POST http://127.0.0.1:5000/api/verify -F "identity_image=@dataset/sample.jpg" -F "threshold=0.36"
+curl -X POST http://127.0.0.1:5000/api/verify -F "identity_image=@dataset/sample.jpg" -F "threshold=0.32"
 ```
 
 ### Success Response
@@ -47,7 +47,7 @@ curl -X POST http://127.0.0.1:5000/api/verify -F "identity_image=@dataset/sample
 {
   "match": true,
   "score": 0.51,
-  "threshold": 0.36,
+  "threshold": 0.32,
   "total_faces": 2,
   "candidate_document_faces": 1,
   "method": "Deep learning: YuNet + SFace",

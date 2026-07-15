@@ -1,17 +1,11 @@
 image,label
-dataset/validation/no_match/real_001.png,no_match
 dataset/test/no_match/real_002.png,no_match
 dataset/test/no_match/real_003.png,no_match
-dataset/validation/no_match/real_004.jpeg,no_match
 dataset/test/no_match/real_005.jpeg,no_match
 dataset/test/no_match/real_006.jpeg,no_match
-dataset/validation/match/real_007.jpeg,match
 dataset/test/match/real_008.jpeg,match
 dataset/test/match/real_009.jpeg,match
 dataset/test/match/real_010.jpeg,match
-dataset/validation/match/synthetic_001.png,match
-dataset/validation/no_match/synthetic_002.png,no_match
-dataset/validation/match/synthetic_003.png,match
 dataset/test/match/synthetic_004.png,match
 dataset/test/match/synthetic_005.png,match
 dataset/test/match/synthetic_006.png,match

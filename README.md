@@ -25,7 +25,7 @@ Setup Windows rapido:
 Oltre alla pagina web, il progetto espone un endpoint JSON:
 
 ```powershell
-curl -X POST http://127.0.0.1:5000/api/verify -F "identity_image=@dataset/sample.jpg" -F "threshold=0.36"
+curl -X POST http://127.0.0.1:5000/api/verify -F "identity_image=@dataset/sample.jpg" -F "threshold=0.32"
 ```
 
 La risposta contiene match, score, metodo usato, numero di volti rilevati e candidati documento.
@@ -66,7 +66,20 @@ Dopo il crop del volto principale, le immagini vengono normalizzate e trasformat
 - istogramma LBP per la texture locale;
 - istogramma dei gradienti per la struttura del volto.
 
-La verifica usa similarita coseno tra i due vettori. La soglia predefinita e `0.36`, modificabile dall'interfaccia.
+La verifica usa similarita coseno tra i due vettori. La soglia predefinita e `0.32`, scelta su un validation set separato e modificabile dall'interfaccia.
+
+## Risultati
+
+La valutazione finale usa 19 immagini annotate manualmente: 6 per scegliere la soglia e 13 per il test indipendente. Il test contiene 9 esempi `match` e 4 `no_match`.
+
+| Metrica | Risultato |
+| --- | ---: |
+| Accuracy | 84,62% |
+| Precision | 100,00% |
+| Recall | 77,78% |
+| F1-score | 87,50% |
+
+La confusion matrix contiene 7 veri positivi, 4 veri negativi, 0 falsi positivi e 2 falsi negativi. Il campione e piccolo: i risultati descrivono questo dataset didattico e non dimostrano affidabilita su popolazioni reali.
 
 ## Valutazione
 
@@ -86,13 +99,13 @@ python scripts/validate_dataset.py samples.csv
 ```
 
 ```powershell
-python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures
+python evaluate.py test.csv --threshold 0.32 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures
 ```
 
 Lo script calcola accuracy, precision, recall, F1-score e confusion matrix. Per inserire automaticamente le metriche nel documento tecnico:
 
 ```powershell
-python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis
+python evaluate.py test.csv --threshold 0.32 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis
 python scripts/export_technical_pdf.py
 ```
 
@@ -102,7 +115,7 @@ Quando rigeneri il PDF tecnico, le figure PNG presenti in `docs/figures/` vengon
 Per cercare una soglia migliore sul dataset:
 
 ```powershell
-python scripts/tune_threshold.py samples.csv --output threshold_tuning.json
+python scripts/tune_threshold.py validation.csv --output threshold_tuning.json
 ```
 
 Workflow finale cross-platform:
@@ -136,12 +149,6 @@ Oppure su Windows:
 ```
 
 La checklist finale per pubblicazione/consegna e in `docs/submission_checklist.md`.
-
-Per creare uno zip pulito da consegnare:
-
-```powershell
-python scripts/package_submission.py
-```
 
 Documenti utili per la consegna:
 
@@ -187,7 +194,6 @@ Il PDF viene salvato in `docs/technical_analysis.pdf`.
 - Test automatici: `tests/`.
 - Audit consegna: `scripts/project_audit.py`.
 - Finalizzazione consegna: `scripts/finalize_submission.py`.
-- Packaging consegna: `scripts/package_submission.py`.
 - Script Windows: `scripts/windows/setup.ps1`, `scripts/windows/check.ps1`, `scripts/windows/evaluate_dataset.ps1`.
 - Checklist submission/GitHub: `docs/submission_checklist.md`.
 - CI GitHub: `.github/workflows/tests.yml`.

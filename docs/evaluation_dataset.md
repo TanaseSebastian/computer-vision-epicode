@@ -1,6 +1,20 @@
 # Evaluation Dataset
 
-Use the synthetic dataset as a labeled CSV with one row per image.
+The local evaluation dataset contains 19 labeled images: 10 real camera samples and 9 synthetic samples. `samples.csv` lists all data, `validation.csv` contains 6 samples for threshold selection, and `test.csv` contains 13 held-out samples for final evaluation.
+
+The synthetic images can be included in the repository for demonstration and reproducibility. Files named `real_*` contain biometric and identity-document data, are ignored by Git, and must not be published.
+
+Local folder layout:
+
+```text
+dataset/
+  validation/
+    match/
+    no_match/
+  test/
+    match/
+    no_match/
+```
 
 Required columns:
 
@@ -44,7 +58,7 @@ python scripts/validate_dataset.py samples.csv
 Evaluation command:
 
 ```powershell
-python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis
+python evaluate.py test.csv --threshold 0.32 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures --update-technical-analysis
 python scripts/export_technical_pdf.py
 ```
 
@@ -58,7 +72,7 @@ When `python scripts/export_technical_pdf.py` is run, PNG files in `docs/figures
 Optional threshold tuning:
 
 ```powershell
-python scripts/tune_threshold.py samples.csv --output threshold_tuning.json
+python scripts/tune_threshold.py validation.csv --output threshold_tuning.json
 ```
 
 End-to-end final workflow:

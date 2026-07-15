@@ -14,6 +14,8 @@ def load_font(size: int):
     candidates = [
         Path("C:/Windows/Fonts/arial.ttf"),
         Path("C:/Windows/Fonts/calibri.ttf"),
+        Path("/System/Library/Fonts/Supplemental/Arial.ttf"),
+        Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
     ]
     for candidate in candidates:
         if candidate.exists():

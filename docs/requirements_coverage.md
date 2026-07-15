@@ -16,7 +16,6 @@
 | Performance evaluation | `evaluate.py` computes accuracy, precision, recall, F1-score, confusion matrix, and plots |
 | Reproducible experimental workflow | `scripts/build_dataset_csv.py`, `scripts/validate_dataset.py`, `scripts/tune_threshold.py`, `samples.csv`, `docs/evaluation_dataset.md`, generated evaluation report |
 | Final submission workflow | `scripts/finalize_submission.py` |
-| Clean submission package | `scripts/package_submission.py` |
 | One-command Windows workflow | `scripts/windows/setup.ps1`, `scripts/windows/check.ps1`, `scripts/windows/evaluate_dataset.ps1` |
 | Submission readiness | `scripts/project_audit.py` and `docs/submission_checklist.md` |
 | Repository deliverables | Source code, `requirements.txt`, `README.md`, technical analysis Markdown and PDF |

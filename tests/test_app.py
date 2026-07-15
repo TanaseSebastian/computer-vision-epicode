@@ -173,10 +173,6 @@ def test_finalize_submission_script_exists():
     assert Path("scripts/finalize_submission.py").exists()
 
 
-def test_package_submission_script_exists():
-    assert Path("scripts/package_submission.py").exists()
-
-
 def test_pdf_export_supports_figures():
     export_script = Path("scripts/export_technical_pdf.py").read_text(encoding="utf-8")
 

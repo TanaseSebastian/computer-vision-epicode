@@ -6,7 +6,7 @@ Explain the problem: identity verification from one selfie where the user holds 
 
 ## 2. Dataset
 
-Describe the synthetic dataset, labels (`match` and `no_match`), and why both classes are needed for precision, recall, F1-score, and confusion matrix.
+Describe the 19-image real/synthetic dataset, labels (`match` and `no_match`), the 6/13 validation-test split, and why both classes are needed for precision, recall, F1-score, and confusion matrix.
 
 ## 3. Pipeline
 
@@ -31,8 +31,8 @@ Show the commands:
 
 ```powershell
 python scripts/validate_dataset.py samples.csv
-python scripts/tune_threshold.py samples.csv --output threshold_tuning.json
-python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json --report docs/evaluation_report.md --update-technical-analysis
+python scripts/tune_threshold.py validation.csv --output threshold_tuning.json
+python evaluate.py test.csv --threshold 0.32 --output evaluation_results.json --report docs/evaluation_report.md --update-technical-analysis
 ```
 
 Explain accuracy, precision, recall, F1-score, and confusion matrix.

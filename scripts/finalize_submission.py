@@ -17,7 +17,7 @@ def main():
     parser = argparse.ArgumentParser(description="Run the final submission workflow.")
     parser.add_argument("--dataset-dir", type=Path, help="Optional dataset folder used to rebuild samples.csv.")
     parser.add_argument("--csv", type=Path, default=Path("samples.csv"))
-    parser.add_argument("--threshold", type=float, default=0.36)
+    parser.add_argument("--threshold", type=float, default=0.32)
     parser.add_argument("--tune-threshold", action="store_true")
     args = parser.parse_args()
 

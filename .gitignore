@@ -11,8 +11,9 @@ models/*.onnx
 extracted_slides/
 evaluation_results.json
 threshold_tuning.json
-identity_checker_submission.zip
 docs/evaluation_report.md
 docs/figures/*.png
 !docs/figures/.gitkeep
 .env
+# Real biometric/document images must never be published.
+dataset/**/real_*

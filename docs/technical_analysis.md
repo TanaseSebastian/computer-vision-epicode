@@ -8,12 +8,14 @@ The project is an academic prototype. It is not intended for real identity contr
 
 ## 2. Dataset
 
-The expected dataset is synthetic and contains single images where a person is holding a document. Each sample is labeled as:
+The local dataset contains 19 single-image samples: 10 real camera photographs and 9 synthetic images. Each image shows a live face and a visible document; labels were assigned manually after comparing the live portrait with the portrait printed on the document. The classes are:
 
 - `match`: the live face and the document face represent the same identity.
 - `no_match`: the document face does not match the live face.
 
-The evaluation CSV must contain `image,label` columns. Positive-only datasets can estimate recall/success rate but cannot fully estimate false positives, precision, F1-score, or a complete confusion matrix.
+There are 12 `match` and 7 `no_match` samples. A fixed, stratified split was created before evaluation: 6 samples (3 per class) in `validation.csv` for threshold selection and 13 samples (9 match, 4 no-match) in `test.csv` for the final metrics. No test image was used to select the threshold. Images containing real identity documents remain local and are excluded by `.gitignore` because they contain biometric and personal data.
+
+The dataset is intentionally small and includes repeated identities. Consequently, the experiment measures performance on these acquisition conditions only and must not be interpreted as population-level biometric validation.
 
 ## 3. Pipeline
 
@@ -54,10 +56,16 @@ If the ONNX models are unavailable, the system falls back to a classical method:
 
 ## 5. Experimental Protocol
 
-Run evaluation with:
+Threshold selection was performed only on the validation split:
 
 ```powershell
-python evaluate.py samples.csv --threshold 0.36 --output evaluation_results.json
+python scripts/tune_threshold.py validation.csv --output threshold_tuning.json
+```
+
+The threshold grid ranged from 0.20 to 0.80 in steps of 0.02. The selected threshold was `0.32`, based on validation F1-score and accuracy, with the higher threshold used as the final tie-breaker. Final evaluation was then run once on the held-out test set:
+
+```powershell
+python evaluate.py test.csv --threshold 0.32 --output evaluation_results.json --report docs/evaluation_report.md --plots-dir docs/figures
 ```
 
 The script reports:
@@ -71,24 +79,41 @@ The script reports:
 - score-distribution plot;
 - row-level predictions and errors.
 
-The recommended experiment is to create a balanced synthetic set with both `match` and `no_match` samples. If only positive samples are available, report the number of successful verifications and clearly state that false-positive behavior is not measured. The repository also includes scripts to build the CSV from labeled folders and to tune the decision threshold on a validation set.
+Metrics are computed at image level. A processing failure is treated as a `no_match` prediction, reflecting the application's fail-closed behavior.
 
 ## 6. Results
 
-This section must be completed after running the evaluator on the final dataset. Paste the generated metrics from `evaluation_results.json` and, if possible, include a small table with true positives, true negatives, false positives, and false negatives.
+- Threshold: `0.32`
+- Samples: `13`
+- Positive samples: `9`
+- Negative samples: `4`
 
-Suggested table:
+## Metrics
 
 | Metric | Value |
 | --- | --- |
-| Accuracy | To be filled |
-| Precision | To be filled |
-| Recall | To be filled |
-| F1-score | To be filled |
+| Accuracy | 84.62% |
+| Precision | 100.00% |
+| Recall | 77.78% |
+| F1-score | 87.50% |
+
+## Confusion Matrix
+
+|  | Predicted match | Predicted no match |
+| --- | ---: | ---: |
+| Actual match | 7 | 2 |
+| Actual no match | 0 | 4 |
 
 ## 7. Failure Analysis
 
-Expected failure cases include:
+Two observed false negatives were:
+
+- `synthetic_005.png`, score `0.274`: the document portrait is small and differs from the live face in scale, expression, and generated facial detail;
+- `synthetic_006.png`, score `0.230`: the document portrait occupies very few pixels and differs in hairstyle and capture appearance from the live portrait.
+
+The validation set also exposed two false accepts at the selected threshold (`real_001.png`, score `0.398`, and `synthetic_002.png`, score `0.432`). This instability, combined with the perfect negative-class result on only four test negatives, shows why a larger identity-disjoint dataset is necessary. One validation image (`real_004.jpeg`) contains no portrait on the visible side of the card; the pipeline correctly fails closed because it cannot detect two faces.
+
+Additional known failure modes are:
 
 - the document portrait is too small or blurry;
 - glare or plastic reflections hide the document face;
@@ -98,7 +123,7 @@ Expected failure cases include:
 - the largest detected face is not the live user;
 - synthetic data is visually too different from real camera images.
 
-These cases should be documented with examples from the dataset when available.
+The main improvement would be a larger, identity-disjoint dataset with more document types, lighting conditions, poses, occlusions and demographic diversity. Document localization before face detection would also reduce confusion with unrelated background faces.
 
 ## 8. Ethical and Security Considerations
 

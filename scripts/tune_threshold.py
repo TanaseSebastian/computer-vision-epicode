@@ -1,7 +1,12 @@
 import argparse
 import csv
 import json
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from app.vision import VerificationError, verify_identity
 from evaluate import NEGATIVE_LABELS, POSITIVE_LABELS, confusion_counts, resolve_image_path, safe_divide
